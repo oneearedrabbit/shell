@@ -1,0 +1,50 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "~= 0.65"
+uvicorn = "~= 0.14"
+gunicorn = "~= 20.0"
+ujson = "~= 4.0.2"
+jsonschema = "~= 3.2"
+protobuf = "== 3.14"
+
+[dev-packages]
+coverage = "~= 5.3"
+flake8 = "~= 3.8.4"
+flake8-annotations = "~= 2.5.0"
+flake8-bugbear = "~= 20.11"
+flake8-docstrings = "~= 1.5"
+flake8-formatter-junit-xml = "~= 0.0.6"
+flake8-import-order = "~= 0.18.1"
+flake8-quotes = "~= 3.2"
+flake8-string-format = "~= 0.3.0"
+flake8-tidy-imports = "~= 4.2"
+flake8-todo = "~= 0.7"
+pep8-naming = "~= 0.11.1"
+pre-commit = "~= 2.9.3"
+pydocstyle = "~= 5.1"
+
+[requires]
+python_version = "3.9"
+
+[scripts]
+eval = "python -m sandbox"
+webserver = "gunicorn -c config/gunicorn.conf.py sandbox.api:app"
+
+# Linting
+# lint = "pre-commit run --all-files"
+# precommit = "pre-commit install"
+
+# Testing
+# report = "coverage report"
+# Fix ownership of the coverage file even if tests fail & preserve exit code
+# test = """
+#     docker-compose run --entrypoint /bin/bash --rm sandbox -c \
+#     'coverage run -m unittest; e=$?; chown --reference=. .coverage; exit $e'
+# """
+
+# Other
+protoc = "python -m scripts.protoc"

@@ -1,0 +1,9 @@
+**/.svelte/**
+**/.svelte-kit/**
+**/static/**
+**/build/**
+**/node_modules/**
+docker-compose.yml
+tmp
+Pipfile.lock
+README.md

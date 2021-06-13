@@ -1,0 +1,106 @@
+@charset "utf-8";
+
+$menu-item-color: hsl(0, 0%, 86%);
+$text: hsl(0, 0%, 13%);
+$primary: #fffa81;
+$editor-color: hsl(0, 0%, 86%);
+
+@import '../node_modules/xterm/css/xterm.css';
+@import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
+@import '../node_modules/bulma/bulma.sass';
+
+$scheme-main: $black;
+$scheme-invert: $white;
+
+html,
+body {
+  font-family: 'Source Serif Pro', Iowan Old Style, Apple Garamond,
+    Palatino Linotype, Times New Roman, 'Droid Serif', Times, serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+}
+
+.editor {
+  background-color: $black;
+  color: $editor-color;
+}
+
+.editor textarea {
+  background-color: $black;
+  color: $editor-color;
+  height: 40vh;
+  width: 100%;
+}
+
+.editor-column {
+  height: 40vh;
+}
+
+html {
+  height: 100vh;
+}
+
+body,
+#svelte {
+  height: 100%;
+}
+
+a.is-white {
+  color: $white;
+  text-decoration: underline !important;
+}
+a.is-white:hover {
+  color: $link;
+}
+a.is-small {
+  font-size: 80%;
+}
+
+hr.divider {
+  height: 1px;
+  padding: 0;
+  margin: 0.5em 0;
+}
+hr.is-light {
+  background-color: hsl(0, 0%, 50%);
+}
+
+.navbar {
+  border-bottom: 1px solid hsl(0, 0, 93%);
+  background-color: $primary;
+}
+
+$footer-background-color: #000000;
+$footer-color: #ffffff;
+$footer-padding: 1rem 0.75rem;
+
+.dropdown {
+  display: block;
+}
+.dropdown:hover .dropdown-trigger {
+  display: inline !important;
+  color: $black;
+}
+.dropdown .is-active .dropdown-trigger {
+  display: inline !important;
+  color: $white;
+}
+.dropdown-trigger {
+  display: none !important;
+  padding: 0 !important;
+  float: right;
+  margin-top: -1.7em;
+  margin-right: 0.5em;
+}
+.dropdown-trigger:hover {
+  border: 0 !important;
+  background: transparent !important;
+  color: $white !important;
+}
+
+.dropdown-menu a {
+  color: $black;
+}
+
+.footer {
+  border-top: 1px solid #f6f6f6;
+}

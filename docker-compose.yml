@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.repl
+    ports:
+      - 5000:5000
+      - 3000:3000
+    env_file:
+      - .env
+    volumes:
+      - ./userland:/userland
+
+  sandbox:
+    privileged: true
+    ports:
+     - 8060:8060
+    init: true
+    ipc: none
+    tty: true
+    working_dir: $PWD/diggy-sandbox
+    env_file:
+      - .env
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1
+    build:
+      context: .
+      dockerfile: Dockerfile.sandbox
+      args:
+        DEV: 0
+    volumes:
+      - ./userland:/userland
+
+volumes:
+  user-base:
