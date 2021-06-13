@@ -69,7 +69,7 @@ todo:
 - harden ssh configuration
 - create a new user, protect root
 - install fail2ban
-- install docker
+- install docker & docker-compose
 - install do-agent
 - install nginx
 
