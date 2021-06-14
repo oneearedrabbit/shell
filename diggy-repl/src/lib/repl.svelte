@@ -19,7 +19,7 @@
 
   onMount(async () => {
     const ioClient = await import('socket.io-client')
-    const socket = ioClient.io(`http://${WS_HOST}`, {
+    const socket = ioClient.io(WS_HOST, {
       query: { username: username },
     })
     socketStore.set(socket)

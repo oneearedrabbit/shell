@@ -40,6 +40,11 @@ yarn lint
 ## run
 
 ```bash
+./init-letsencrypt.sh
+
+# for production, make change to ./init-letsencrypt.sh such
+# as email address, domains, delete exit statement
+
 docker-compose build
 docker-compose up
 ```
@@ -52,7 +57,6 @@ up.
 
 todo:
   - [ ] add static pages
-  - [ ] TLS
   - [ ] add ruby
   - [ ] full-height repl
   - [ ] drop a message

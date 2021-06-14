@@ -5,7 +5,7 @@ export async function runCode(host, username) {
   termStore.println(`$ Running ${get(filenameStore)}...`)
 
   const response = await fetch(
-    `http://${host}/eval`,
+    `${host}/eval`,
     {
       method: 'POST',
       headers: {

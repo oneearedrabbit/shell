@@ -9,14 +9,14 @@ log = logging.getLogger(__name__)
 app = FastAPI()
 
 origins = [
-    f'http://{os.environ["WEB_HOST"]}'
+    os.environ["WEB_HOST"]
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST"],
     allow_headers=["*"],
 )
 

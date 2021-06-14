@@ -12,7 +12,7 @@ dotenv.config({ path: './.env' })
 const httpServer = createServer()
 const io = new Server(httpServer, {
   cors: {
-    origin: `http://${process.env['WEB_HOST']}`,
+    origin: process.env['WEB_HOST'],
     methods: ['GET', 'POST'],
   },
 })
