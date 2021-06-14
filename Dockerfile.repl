@@ -19,23 +19,27 @@ ADD diggy-repl/package.json /usr/src/app
 ADD diggy-repl/yarn.lock /usr/src/app
 RUN yarn
 
-# Build application
-ADD diggy-repl /usr/src/app
-RUN yarn build
-
 # Install application & dependencies
 RUN mkdir -p /opt/app
-
-# Web interface
-RUN cp -r /usr/src/app/build /opt/app
 
 # Socket server
 RUN cp /usr/src/app/package.json /opt/app/
 RUN cp /usr/src/app/yarn.lock /opt/app/
-RUN cp -r /usr/src/app/src/lib /opt/app
-RUN cp /usr/src/app/src/server.js /opt/app/
-
 RUN cd /opt/app && yarn install --production
+
+ADD diggy-repl/src/lib /opt/app/lib
+ADD diggy-repl/src/server.js /opt/app/
+ADD .env /opt/app/.env
+
+# Build application
+# NOTE: this is ugly, it will invalidate cache layer even there are
+# changes not realted to web app
+ADD diggy-repl /usr/src/app
+ADD .env /usr/src/app/.env
+RUN yarn build
+
+# Web interface
+RUN cp -r /usr/src/app/build /opt/app
 
 # Copy web app supervisord conf
 ADD diggy-repl/docker/web.conf /etc/supervisor/conf.d/

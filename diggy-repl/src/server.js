@@ -5,7 +5,9 @@ import dotenv from 'dotenv'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 
+// Ugh...
 dotenv.config({ path: '../.env' })
+dotenv.config({ path: './.env' })
 
 const httpServer = createServer()
 const io = new Server(httpServer, {
@@ -41,9 +43,10 @@ io.on('connection', (socket) => {
 })
 
 const port = 5000
+const host = process.env['HOST'] || '127.0.0.1'
 
-httpServer.listen(port, () => {
-  console.log(`listening on *:${port}`)
+httpServer.listen(port, host, () => {
+  console.log(`listening on ${host}:${port}`)
 })
 
 // file system monitor

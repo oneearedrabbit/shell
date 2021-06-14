@@ -1,18 +1,19 @@
 import { get } from 'svelte/store'
 import { termStore, filenameStore } from '$lib/stores.js'
 
-export async function runCode(username) {
+export async function runCode(host, username) {
   termStore.println(`$ Running ${get(filenameStore)}...`)
 
   const response = await fetch(
-    `http://${import.meta.env.VITE_SANDBOX_HOST}/eval`,
+    `http://${host}/eval`,
     {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      // TODO: some ugly filename manipulation, align it with chroot
+      // TODO: some crazy filename manipulation, perhaps align it with
+      // chroot
       body: JSON.stringify({
         input: get(filenameStore).split('/').slice(2).join('/'),
         username: username,

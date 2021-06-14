@@ -74,3 +74,4 @@ todo:
 - install nginx
 
 - setup 4 domains: www/@, ws, and sandbox
+- add domains to /etc/hosts

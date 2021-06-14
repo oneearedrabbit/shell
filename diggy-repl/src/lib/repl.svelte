@@ -1,6 +1,7 @@
 <script>
   export let username, files
 
+  import { SANDBOX_HOST, WS_HOST } from '$lib/env.js'
   import { runCode, newFile } from './repl.js'
   import { onMount } from 'svelte'
   import CodeEditor from '$lib/codeeditor.svelte'
@@ -18,7 +19,7 @@
 
   onMount(async () => {
     const ioClient = await import('socket.io-client')
-    const socket = ioClient.io(`ws://${import.meta.env.VITE_WS_HOST}`, {
+    const socket = ioClient.io(`http://${WS_HOST}`, {
       query: { username: username },
     })
     socketStore.set(socket)
@@ -77,7 +78,7 @@
   </div>
   <div class="column is-two-fifths" style="border-left:1px solid #333333;">
     <div class="has-text-weight-bold pb-2">
-      <a class="button is-link is-small" on:click={runCode(username)}
+      <a class="button is-link is-small" on:click={runCode(SANDBOX_HOST, username)}
         >Run &#9658;</a
       >
     </div>

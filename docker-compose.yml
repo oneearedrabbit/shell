@@ -1,6 +1,24 @@
 version: "3.7"
 
+networks:
+  net:
+
 services:
+  nginx:
+    image: nginx:latest
+    container_name: production_nginx
+    restart: "always"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d/diggy.conf
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - web
+      - sandbox
+    networks:
+      - net
+
   web:
     build:
       context: .
@@ -12,6 +30,8 @@ services:
       - .env
     volumes:
       - ./userland:/userland
+    networks:
+      - net
 
   sandbox:
     privileged: true
@@ -32,6 +52,8 @@ services:
         DEV: 0
     volumes:
       - ./userland:/userland
+    networks:
+      - net
 
 volumes:
   user-base:
