@@ -51,17 +51,18 @@ it was put as a weekend project, and it does require a massive clean
 up.
 
 todo:
-  - [ ] massive cleanup
-  - [ ] add more languages
-  - [ ] do nginx config
   - [ ] add static pages
+  - [ ] TLS
+  - [ ] add ruby
   - [ ] full-height repl
   - [ ] drop a message
-  - [ ] TLS
+  - [ ] mount /userland to external volume
 
+  - [ ] massive cleanup
   - [ ] /snap/@username for temporary userlands
   - [ ] readonly userlands
   - [ ] optimize Dockerfile.repl
+  - [ ] split up web and socket containers
 
 ## configure digitalocean instance
 

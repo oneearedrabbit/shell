@@ -60,6 +60,7 @@
 </script>
 
 <script>
+  import { SANDBOX_HOST } from '$lib/env.js'
   import { editorStore, filenameStore, socketStore } from '$lib/stores.js'
   import { onMount, createEventDispatcher } from 'svelte'
   import { oneDark } from './one-dark'
@@ -130,7 +131,7 @@
           {
             key: `${mod}-Enter`,
             run: async () => {
-              runCode(username)
+              runCode(SANDBOX_HOST, username)
             },
           },
         ]),
