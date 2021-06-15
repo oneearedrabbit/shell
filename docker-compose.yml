@@ -4,6 +4,11 @@ services:
   dns:
     hostname: diggy.sh
 
+extra_hosts:
+  - "127.0.0.1:localhost.localdomain"
+  - "127.0.0.1:localhost"
+  - "127.0.0.1:diggy.sh"
+
 networks:
   net:
 

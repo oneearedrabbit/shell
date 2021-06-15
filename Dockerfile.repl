@@ -7,15 +7,12 @@ RUN apt-get install -y curl gnupg2
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update \
-    && apt-get install -y supervisor yarn sendmail nodejs \
+    && apt-get install -y supervisor yarn nodejs sendmail \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure sendmail, add SMTP configuration at some point
 RUN echo "define('MAIL_HUB', 'diggy.sh.')dnl" >> /etc/mail/sendmail.mc
 RUN echo "define('LOCAL_RELAY', 'diggy.sh.')dnl" >> /etc/mail/sendmail.mc
-
-RUN echo -e "127.0.0.1 diggy.sh\n$(cat /etc/hosts)" > /etc/hosts
-RUN echo -e "127.0.0.1 localhost.localdomain localhost diggy.sh\n$(cat /etc/hosts)" > /etc/hosts
 
 RUN yes | sendmailconfig
 
