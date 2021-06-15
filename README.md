@@ -59,6 +59,7 @@ it was put as a weekend project, and it does require a massive clean
 up.
 
 TODO:
+  - [ ] move away from python-slim-buster to ubuntu
   - [ ] add ruby
   - [ ] fix overlapping ui
   - [ ] mathplotlib example

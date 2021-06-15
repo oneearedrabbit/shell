@@ -59,8 +59,7 @@
 
       <p>Simply <a on:click={newProject}>click a link</a> to use Diggy
         or give it a try in the code editor below. It creates a new
-        workspace everytime you load a page. No accounts
-        required. You can also self-host Diggy if you want.
+        workspace everytime you load a page. No accounts required.
       </p>
 
       <p>
@@ -106,8 +105,10 @@
       </ol>
 
       <p>
-        That being said, I suggest not to run anything critical or sensetive at
-        this point on Diggy.
+        That being said, I suggest not to run anything critical or
+        sensetive at this point on Diggy. I think I will be cleaning
+        up anonymous projects from time to time. At some point, I will
+        implement permanent accounts.
       </p>
 
       <p>
