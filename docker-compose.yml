@@ -8,7 +8,7 @@ services:
     image: nginx:latest
     restart: unless-stopped
     volumes:
-      - ./config/nginx.conf:/etc/nginx/conf.d/diggy.conf
+      - ./config/diggy.conf:/etc/nginx/conf.d/diggy.conf
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     ports:

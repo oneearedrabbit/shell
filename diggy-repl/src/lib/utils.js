@@ -5,3 +5,10 @@ export function UUID() {
     return v.toString(16)
   })
 }
+
+export function newProject() {
+  const uuid = UUID()
+  const url = `/@${uuid}`
+  history.pushState({}, '', url)
+  window.location.assign(url)
+}
