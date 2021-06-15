@@ -54,9 +54,13 @@
         Diggy is
         an <a href="https://github.com/diggyhq/shell">open-source
         playground</a> that runs 70 programming
-        languages. Simply <a on:click={newProject}>click a link</a> to
-        use Diggy or give it a try in the code editor below. No
-        accounts required. You can also self-host Diggy if you want.
+        languages.
+      </p>
+
+      <p>Simply <a on:click={newProject}>click a link</a> to use Diggy
+        or give it a try in the code editor below. It creates a new
+        workspace everytime you load a page. No accounts
+        required. You can also self-host Diggy if you want.
       </p>
 
       <p>
