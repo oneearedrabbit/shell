@@ -3,12 +3,6 @@ version: "3.7"
 services:
   dns:
     hostname: diggy.sh
-
-extra_hosts:
-  - "127.0.0.1:localhost.localdomain"
-  - "127.0.0.1:localhost"
-  - "127.0.0.1:diggy.sh"
-
 networks:
   net:
 
@@ -53,6 +47,10 @@ services:
       - ./userland:/userland
     networks:
       - net
+    extra_hosts:
+      - "localhost.localdomain:127.0.0.1"
+      - "localhost:127.0.0.1"
+      - "diggy.sh:127.0.0.1"
 
   sandbox:
     privileged: true
