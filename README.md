@@ -82,6 +82,7 @@ TODO:
 - (local) add domains to /etc/hosts
 - (local) FireFox is going to complain about dummy certificates, visit
   each test domain to acknowledge security risks. Otherwise, CORS will fail
-- adjust ./config/diggy.conf and ./init-letsencrypt.sh per your
-  setup
+- adjust ./config/diggy.conf,./init-letsencrypt.sh,
+  docker-compose.yml, Dockerfile.repl per your setup (specifically
+  replace diggy.test to whatever makes more sense)
 - run ./init-letsencrypt.sh

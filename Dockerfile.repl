@@ -11,8 +11,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure sendmail, add SMTP configuration at some point
-RUN echo "define('MAIL_HUB', 'diggy.sh.')dnl" >> /etc/mail/sendmail.mc
-RUN echo "define('LOCAL_RELAY', 'diggy.sh.')dnl" >> /etc/mail/sendmail.mc
+RUN echo "define('MAIL_HUB', 'diggy.test.')dnl" >> /etc/mail/sendmail.mc
+RUN echo "define('LOCAL_RELAY', 'diggy.test.')dnl" >> /etc/mail/sendmail.mc
 
 RUN yes | sendmailconfig
 
