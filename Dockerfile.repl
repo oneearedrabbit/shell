@@ -14,8 +14,8 @@ RUN apt-get update \
 RUN echo "define('MAIL_HUB', 'diggy.sh.')dnl" >> /etc/mail/sendmail.mc
 RUN echo "define('LOCAL_RELAY', 'diggy.sh.')dnl" >> /etc/mail/sendmail.mc
 
-RUN echo -e "127.0.0.1 diggy.sh\n(cat /etc/hosts" > /etc/hosts
-RUN echo -e "127.0.0.1 localhost.localdomain localhost diggy.sh\n(cat /etc/hosts" > /etc/hosts
+RUN echo -e "127.0.0.1 diggy.sh\n$(cat /etc/hosts)" > /etc/hosts
+RUN echo -e "127.0.0.1 localhost.localdomain localhost diggy.sh\n$(cat /etc/hosts)" > /etc/hosts
 
 RUN yes | sendmailconfig
 
