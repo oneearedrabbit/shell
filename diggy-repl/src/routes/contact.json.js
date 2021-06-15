@@ -13,18 +13,22 @@ export async function post(request) {
   }
 
   let transporter = nodemailer.createTransport({
-    sendmail: true,
-    newline: 'unix',
-    path: '/usr/sbin/sendmail'
+    host: 'mail',
+    port: 25,
   });
+
   transporter.sendMail({
     from: body.email,
     to: 'hi@diggy.sh',
     subject: 'Diggy - Contact Form',
     text: body.message
   }, (err, info) => {
-    console.log(info.envelope);
-    console.log(info.messageId);
+    console.log(err)
+
+    if (info) {
+      console.log(info.envelope);
+      console.log(info.messageId);
+    }
   });
   
   return { body: { message: 'Message sent!' } }

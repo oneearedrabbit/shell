@@ -1,13 +1,20 @@
 version: "3.7"
 
-services:
-  dns:
-    hostname: diggy.test
-
 networks:
   net:
+  mail:
 
 services:
+  mail:
+    image: juanluisbaptiste/postfix:1.2.0
+    restart: always
+    expose:
+      - 25
+    env_file:
+      - .env
+    networks:
+      - mail
+
   nginx:
     image: nginx:latest
     restart: unless-stopped
@@ -39,15 +46,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.repl
-    ports:
-      - 5000:5000
-      - 3000:3000
+    expose:
+      - 5000
+      - 3000
     env_file:
       - .env
     volumes:
       - ./userland:/userland
     networks:
       - net
+      - mail
     extra_hosts:
       - "localhost.localdomain:127.0.0.1"
       - "localhost:127.0.0.1"
@@ -55,8 +63,8 @@ services:
 
   sandbox:
     privileged: true
-    ports:
-     - 8060:8060
+    expose:
+     - 8060
     init: true
     ipc: none
     tty: true
