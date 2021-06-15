@@ -6,6 +6,8 @@ node_modules
 build
 tmp
 venv
+userland
+!userland/.keep
 
 /data/certbot
 

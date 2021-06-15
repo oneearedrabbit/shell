@@ -1,5 +1,5 @@
 <script>
-  export let username, files
+  export let username, files, templatize
 
   import { SANDBOX_HOST, WS_HOST } from '$lib/env.js'
   import { runCode, newFile } from './repl.js'

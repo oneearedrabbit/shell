@@ -59,7 +59,6 @@ it was put as a weekend project, and it does require a massive clean
 up.
 
 TODO:
-  - [ ] generate random @welcome on /
   - [ ] add ruby
   - [ ] fix overlapping ui
   - [ ] mathplotlib example

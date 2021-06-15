@@ -2,17 +2,20 @@
   /**
    * @type {import('@sveltejs/kit').Load}
    */
+  import { UUID } from '$lib/utils.js'
 
   let username = 'welcome'
 
   // NOTE: this code duplicates @[username].svelte, not sure how to
   // make it more organic
+  // TODO: extract it repl.svelte component
   export async function load({ page, fetch, session, context }) {
     const url = `/fs.json?`
     const res = await fetch(
       url +
         new URLSearchParams({
-          username: username,
+          username: UUID(),
+	  templatize: true
         })
     )
 
@@ -73,7 +76,7 @@
 <div class="columns is-gapless">
   <div class="column is-1" />
   <div class="column">
-    <Repl {username} {files} />
+    <Repl {username} {files} templatize={true} />
   </div>
   <div class="column is-1" />
 </div>
