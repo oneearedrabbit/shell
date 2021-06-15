@@ -54,9 +54,14 @@
 
   function beautifyPath(pathname) {
     const chunks = pathname.split('/')
-    const folder = chunks.slice(0, -1).join('/')
+    let folder = chunks.slice(2, -1).filter(Boolean)
+    if (folder.length > 0) {
+      folder.push('/')
+    }
+    folder.unshift('/')
+    folder = folder.join('')
     const filename = chunks.slice(-1).join()
-    return `<span class="folder">${folder}/</span><span class="filename">${filename}</span>`
+    return `<span class="folder">${folder}</span><span class="filename">${filename}</span>`
   }
 
   async function openFile(pathname) {
@@ -86,10 +91,6 @@
     filenameStore.set(null)
   }
 </script>
-
-<style>
-  :global(span.folder) { display: none; }
-</style>
 
 <aside class="menu">
   <ul class="menu-list">

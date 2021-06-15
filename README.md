@@ -62,6 +62,7 @@ TODO:
   - [ ] add ruby
   - [ ] fix overlapping ui
   - [ ] mathplotlib example
+  - [ ] add plausible
 
   - [ ] massive cleanup
   - [ ] full-height repl
