@@ -1,5 +1,9 @@
 version: "3.7"
 
+services:
+  dns:
+    hostname: diggy.sh
+
 networks:
   net:
 

@@ -58,13 +58,12 @@ up.
 
 TODO:
   - [ ] generate random @welcome on /
-  - [ ] add static pages
   - [ ] add ruby
-  - [ ] full-height repl
-  - [ ] contact me form
-  - [ ] mount /userland to external volume
+  - [ ] fix overlapping ui
+  - [ ] mathplotlib example
 
   - [ ] massive cleanup
+  - [ ] full-height repl
   - [ ] /snap/@username for temporary userlands
   - [ ] readonly userlands
   - [ ] optimize Dockerfile.repl
