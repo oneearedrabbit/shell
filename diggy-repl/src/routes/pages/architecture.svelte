@@ -1,6 +1,6 @@
 <h2>Architecture</h2>
 
-<p>A sandbox runners for executing code in isolation aka
+<p>Diggy runs a container for executing code in isolation aka
 sandbox. There are some <a href="/pages/limitations">limitations</a>
 you might want to be aware of.</p>
 

@@ -87,6 +87,10 @@
   }
 </script>
 
+<style>
+  :global(span.folder) { display: none; }
+</style>
+
 <aside class="menu">
   <ul class="menu-list">
     {#each (files || []).sort() as pathname}

@@ -103,8 +103,7 @@
 
       <p>
         That being said, I suggest not to run anything critical or sensetive at
-        this point on Diggy. Also, I will reset <a href="/@welcome">@welcome</a>
-        user every hour.
+        this point on Diggy.
       </p>
 
       <p>
