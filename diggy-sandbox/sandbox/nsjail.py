@@ -210,6 +210,7 @@ class NsJail:
                 "--cgroup_mem_parent", cgroup,
                 "--cgroup_pids_parent", cgroup,
                 "--bindmount", f'{fullpath}:/userland',
+                "--cwd", "/userland",
                 *nsjail_args,
                 "--",
                 lang['path'], *lang['arg'], *args, f'/userland/{filename}'

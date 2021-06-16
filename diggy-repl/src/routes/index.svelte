@@ -4,7 +4,7 @@
    */
   import { UUID } from '$lib/utils.js'
 
-  let username = 'welcome'
+  let username = UUID()
 
   // NOTE: this code duplicates @[username].svelte, not sure how to
   // make it more organic
@@ -14,7 +14,7 @@
     const res = await fetch(
       url +
         new URLSearchParams({
-          username: UUID(),
+          username: username,
 	  templatize: true
         })
     )
