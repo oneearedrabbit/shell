@@ -67,7 +67,7 @@ To expose third-party Python packages during evaluation, install them
 to a custom user site:
 
 ```sh
-docker exec sandbox /bin/sh -c 'PYTHONUSERBASE=/sandbox/user_base pip install numpy'
+docker exec sandbox /bin/sh -c 'PYTHONUSERBASE=/opt/python/user_base pip install numpy'
 ```
 
 In the above command, `sandbox` is the name of the running

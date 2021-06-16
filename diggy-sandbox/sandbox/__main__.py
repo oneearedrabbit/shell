@@ -5,8 +5,9 @@ from sandbox.nsjail import NsJail
 
 def parse_args() -> argparse.Namespace:
     """Parse the command-line arguments and return the populated namespace."""
-    parser = argparse.ArgumentParser(prog="sandbox", usage="%(prog)s code [nsjail_args ...]")
-    parser.add_argument("code", help="the Python code to evaluate")
+    parser = argparse.ArgumentParser(prog="sandbox", usage="%(prog)s filename [nsjail_args ...]")
+    parser.add_argument("filename", help="filename to evaluate")
+    parser.add_argument("username", help="username")
     parser.add_argument("nsjail_args", nargs="?", help="override configured NsJail options")
 
     # nsjail_args is just a dummy for documentation purposes.
@@ -18,9 +19,9 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
-    """Evaluate Python code through NsJail."""
+    """Evaluate file through NsJail."""
     args = parse_args()
-    result = NsJail().python3(args.code, *args.nsjail_args)
+    result = NsJail().run(args.filename, args.username, *args.nsjail_args)
     print(result.stdout)
 
 

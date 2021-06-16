@@ -31,7 +31,7 @@ async def eval(request: Request):
     args = ()
 
     try:
-        result = nsjail.python3(filename, username, py_args=args)
+        result = nsjail.run(filename, username, args=args)
     except Exception:
         log.exception("An exception occurred while trying to process the request")
         raise

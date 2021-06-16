@@ -14,6 +14,7 @@ from google.protobuf import text_format
 
 from sandbox import DEBUG
 from sandbox.config import NsJailConfig
+from sandbox.langs import langs
 
 log = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ READ_CHUNK_SIZE = 10_000  # chars
 
 class NsJail:
     """
-    Core Sandbox functionality, providing safe execution of Python code.
+    Core Sandbox functionality, providing safe execution of code.
 
     See config/sandbox.cfg for the default NsJail configuration.
     """
@@ -171,25 +172,34 @@ class NsJail:
 
         return "".join(output)
 
-    def python3(
+    def run(
         self,
         filename: str,
         username: str,
         *,
         nsjail_args: Iterable[str] = (),
-        py_args: Iterable[str] = ()
+        args: Iterable[str] = ()
     ) -> CompletedProcess:
-        """
-        Execute Python 3 code in an isolated environment and return the completed process.
+        """Execute code in an isolated environment and return the completed
+        process.
 
-        The `nsjail_args` passed will be used to override the values in the NsJail config.
-        These arguments are only options for NsJail; they do not affect Python's arguments.
+        The `nsjail_args` passed will be used to override the values
+        in the NsJail config.  These arguments are only options for
+        NsJail; they do not affect programming laguage's arguments.
 
-        `py_args` are arguments to pass to the Python subprocess before the code,
-        which is the last argument. By default, it's "-c", which executes the code given.
+        `args` are arguments to pass to the programming laguage
+        subprocess before the code, which is the last argument. By
+        default, it's "-c", which executes the code given.
+
         """
         cgroup = self._create_dynamic_cgroups()
         fullpath = f'/userland/{username}'
+
+        lang = langs.get(os.path.splitext(filename)[1])
+
+        # This language is not supported
+        if lang is None:
+            return CompletedProcess('', 0, 'Language is not supported', None)
 
         with NamedTemporaryFile() as nsj_log:
             args = (
@@ -202,7 +212,7 @@ class NsJail:
                 "--bindmount", f'{fullpath}:/userland',
                 *nsjail_args,
                 "--",
-                self.config.exec_bin.path, *self.config.exec_bin.arg, *py_args, f'/userland/{filename}'
+                lang['path'], *lang['arg'], *args, f'/userland/{filename}'
             )
 
             msg = f'Executing filename {fullpath}/{filename}...'
@@ -243,7 +253,10 @@ class NsJail:
         log.info(f"nsjail return code: {returncode}")
 
         # Remove the dynamically created cgroups once we're done
-        Path(self.config.cgroup_mem_mount, cgroup).rmdir()
-        Path(self.config.cgroup_pids_mount, cgroup).rmdir()
+        try:
+            Path(self.config.cgroup_mem_mount, cgroup).rmdir()
+            Path(self.config.cgroup_pids_mount, cgroup).rmdir()
+        except OSError as e:
+            log.error('Could not remove temporary cgroup/pids')
 
         return CompletedProcess(args, returncode, output, None)

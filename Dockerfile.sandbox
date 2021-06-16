@@ -64,7 +64,7 @@ ARG DEV
 RUN if [ -n "${DEV}" ]; \
     then \
         pipenv install --deploy --system --dev \
-        && PYTHONUSERBASE=/sandbox/user_base pip install numpy~=1.19; \
+        && PYTHONUSERBASE=/opt/python/user_base pip install numpy~=1.19; \
     fi
 
 # At the end to avoid re-installing dependencies when only a config changes.
@@ -72,10 +72,63 @@ RUN if [ -n "${DEV}" ]; \
 # COPY diggy-sandbox/config/ /sandbox/config
 
 # ------------------------------------------------------------------------------
-FROM venv
+FROM venv as sandbox
+
+# Install all additional languages here
+RUN apt-get -y update \
+    && apt-get install -y \
+        curl \
+        gnupg2 \
+        procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# == Python
+# Nothing to do here, I am using python:slim-buster already
+
+# == Ruby
+# Based on https://github.com/ms-ati/docker-rvm/blob/master/Dockerfile
+# I am not sure whether I like RVM approach more than a native Ruby
+# package, but I am giving it a try.
+ARG RVM_VERSION=stable
+ENV RVM_VERSION=${RVM_VERSION}
+
+# 3.0.0-preview1 was the latest available binary at the time of
+# writting this Dockerfile
+ARG RVM_RUBY_VERSION="3.0.0-preview1"
+ENV RVM_RUBY_VERSION=${RVM_RUBY_VERSION}
+ENV RVM_RUBY_DEFAULT=${RVM_RUBY_VERSION}
+
+RUN mkdir ~/.gnupg \
+ && chmod 700 ~/.gnupg \
+ && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
+ && gpg2 --quiet --no-tty --keyserver hkp://pool.sks-keyservers.net \
+         --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 \
+                     7D2BAF1CF37B13E2069D6956105BD0E739499BDB \
+ && ( echo 409B6B1796C275462A1703113804BB82D39DC0E3:6: | gpg2 --import-ownertrust ) \
+ && ( echo 7D2BAF1CF37B13E2069D6956105BD0E739499BDB:6: | gpg2 --import-ownertrust ) \
+ && curl -sSL https://raw.githubusercontent.com/rvm/rvm/${RVM_VERSION}/binscripts/rvm-installer -o rvm-installer \
+ && curl -sSL https://raw.githubusercontent.com/rvm/rvm/${RVM_VERSION}/binscripts/rvm-installer.asc -o rvm-installer.asc \
+ && gpg2 --verify rvm-installer.asc rvm-installer \
+ && bash rvm-installer \
+ && rm rvm-installer \
+ && echo "rvm_autoupdate_flag=2" >> /etc/rvmrc \
+ && echo "rvm_silence_path_mismatch_check_flag=1" >> /etc/rvmrc \
+ && echo "install: --no-document" > /etc/gemrc
+
+SHELL ["/bin/bash", "--login", "-c"]
+
+RUN echo "== docker-rvm: Installing ${RVM_RUBY_VERSION} ==" \
+    && rvm install ${RVM_RUBY_VERSION} \
+    && echo "== docker-rvm: Setting default ${RVM_RUBY_DEFAULT} ==" \
+    && rvm use --default ${RVM_RUBY_DEFAULT} \
+    && rvm cleanup all \
+    && rm -rf /var/lib/apt/lists/*
+
+# ------------------------------------------------------------------------------
+FROM sandbox
 
 WORKDIR /sandbox
-
+/usr/local/rvm/rubies/ruby-3.0.0-preview1/bin/ruby
 COPY diggy-sandbox /sandbox
 ADD diggy-sandbox/docker/web.conf /etc/supervisor/conf.d/
 
