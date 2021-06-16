@@ -128,7 +128,6 @@ RUN echo "== docker-rvm: Installing ${RVM_RUBY_VERSION} ==" \
 FROM sandbox
 
 WORKDIR /sandbox
-/usr/local/rvm/rubies/ruby-3.0.0-preview1/bin/ruby
 COPY diggy-sandbox /sandbox
 ADD diggy-sandbox/docker/web.conf /etc/supervisor/conf.d/
 

@@ -59,8 +59,7 @@ it was put as a weekend project, and it does require a massive clean
 up.
 
 TODO:
-  - [ ] move away from python-slim-buster to ubuntu
-  - [ ] add ruby
+  - [ ] save only if there are changes
   - [ ] fix overlapping ui
   - [ ] mathplotlib example
   - [ ] add plausible
@@ -88,3 +87,4 @@ TODO:
 - adjust ./config/diggy.conf, and ./init-letsencrypt.sh per your setup
   (specifically replace diggy.test to whatever makes more sense)
 - run ./init-letsencrypt.sh
+- run ./setup.sh
