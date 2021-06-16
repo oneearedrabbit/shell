@@ -59,7 +59,6 @@ it was put as a weekend project, and it does require a massive clean
 up.
 
 TODO:
-  - [ ] save only if there are changes
   - [ ] fix overlapping ui
   - [ ] mathplotlib example
   - [ ] add plausible

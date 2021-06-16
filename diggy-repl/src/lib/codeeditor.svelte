@@ -74,6 +74,7 @@
   const refs = {}
   let editor
   let destroyed = false
+  let interval
 
   $: if (editor && $editorStore !== undefined) {
     createEditor($editorStore)
@@ -87,16 +88,6 @@
 
       await createEditor($editorStore)
     })()
-
-    const interval = setInterval(() => {
-      if (!$socketStore) {
-        return
-      }
-
-      // TODO: extract from ws to a REST call
-      const text = editor.viewState.state.sliceDoc()
-      $socketStore.emit('save', { filename: $filenameStore, body: text })
-    }, 2500)
 
     return () => {
       destroyed = true
@@ -115,7 +106,20 @@
         return
       }
 
-      const text = editor.viewState.state.doc.toJSON() || []
+      // const text = editor.viewState.state.doc.toJSON() || []
+      const text = editor.viewState.state.sliceDoc()
+
+      clearTimeout(interval);
+      interval = setTimeout(() => {
+	if (!$socketStore) {
+          return
+	}
+
+	// TODO: extract from ws to a REST call
+	$socketStore.emit('save', { filename: $filenameStore, body: text })
+	console.log('saved!')
+      }, 750)
+
       dispatch('change', { text })
     })
 
