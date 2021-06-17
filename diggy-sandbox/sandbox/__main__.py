@@ -5,7 +5,7 @@ from sandbox.nsjail import NsJail
 
 def parse_args() -> argparse.Namespace:
     """Parse the command-line arguments and return the populated namespace."""
-    parser = argparse.ArgumentParser(prog="sandbox", usage="%(prog)s filename [nsjail_args ...]")
+    parser = argparse.ArgumentParser(prog="sandbox", usage="%(prog)s filename username [nsjail_args ...]")
     parser.add_argument("filename", help="filename to evaluate")
     parser.add_argument("username", help="username")
     parser.add_argument("nsjail_args", nargs="?", help="override configured NsJail options")

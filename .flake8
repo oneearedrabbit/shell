@@ -6,7 +6,7 @@ import-order-style = pycharm
 inline-quotes = "
 max-line-length = 100
 
-exclude = diggy-sandbox/__pycache__,diggy-sandbox/.cache,diggy-sandbox/user_base,diggy-sandbox/venv,diggy-sandbox/.venv,diggy-sandbox/sandbox/config.py,userland,diggy-repl,tmp,node_modules
+exclude = diggy-sandbox/__pycache__,diggy-sandbox/.cache,diggy-sandbox/diggy,diggy-sandbox/venv,diggy-sandbox/.venv,diggy-sandbox/sandbox/config.py,userland,diggy-repl,tmp,node_modules
 
 ignore =
     W503,

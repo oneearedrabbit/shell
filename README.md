@@ -58,17 +58,7 @@ Disclaimer: Diggy's code base is not in the best shape at the moment,
 it was put as a weekend project, and it does require a massive clean
 up.
 
-TODO:
-  - [ ] fix overlapping ui
-  - [ ] mathplotlib example
-  - [ ] add plausible
-
-  - [ ] massive cleanup
-  - [ ] full-height repl
-  - [ ] /snap/@username for temporary userlands
-  - [ ] readonly userlands
-  - [ ] optimize Dockerfile.repl
-  - [ ] split up web and socket containers
+See ROADMAP.md for more detail.
 
 ## Configure DigitalOcean instance
 

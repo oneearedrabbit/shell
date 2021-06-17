@@ -11,7 +11,7 @@ services:
     expose:
       - 25
     env_file:
-      - .env
+      - .env.smtp
     networks:
       - mail
 

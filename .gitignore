@@ -101,6 +101,7 @@ celerybeat-schedule
 
 # Environments
 .env
+.env.smtp
 .venv
 env/
 venv/

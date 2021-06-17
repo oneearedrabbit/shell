@@ -67,7 +67,7 @@ To expose third-party Python packages during evaluation, install them
 to a custom user site:
 
 ```sh
-docker exec sandbox /bin/sh -c 'PYTHONUSERBASE=/opt/python/user_base pip install numpy'
+docker exec sandbox /bin/sh -c 'PYTHONUSERBASE=/opt/python/diggy pip install numpy'
 ```
 
 In the above command, `sandbox` is the name of the running
@@ -75,7 +75,7 @@ container. The name may be different and can be checked with `docker
 ps`.
 
 The packages will be installed to the user site within
-`/sandbox/user_base`. To persist the installed packages, a volume for
+`/opt/python/diggy`. To persist the installed packages, a volume for
 the directory can be created with Docker. For an example, see
 [`docker-compose.yml`].
 

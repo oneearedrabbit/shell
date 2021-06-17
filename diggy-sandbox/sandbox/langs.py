@@ -2,7 +2,7 @@ langs = {
     '.py': {
         'name': 'Python',
         'path': '/usr/local/bin/python',
-        'arg': ['-Squ']
+        'arg': ['-BSqu']
     },
     '.rb': {
         'name': 'Ruby',
