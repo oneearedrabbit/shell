@@ -1,15 +1,13 @@
 # Roadmap
 
 TODO:
+  - [ ] harden setuid setgid
   - [ ] fix overlapping ui
   - [ ] add plausible
 
-  - [ ] massive cleanup
-  - [ ] full-height repl
-  - [ ] /snap/@username for temporary userlands
-  - [ ] readonly userlands
-  - [ ] optimize Dockerfile.repl
-  - [ ] split up web and socket containers
+  - [ ] Massive cleanup
+  - [ ] Make editor to take full-height on /@namespace page
+  - [ ] Split up web and socket containers
 
 ROADMAP:
   - [ ] Collaborative editor
