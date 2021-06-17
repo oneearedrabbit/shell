@@ -1,9 +1,8 @@
 # Roadmap
 
 TODO:
-  - [ ] harden setuid setgid
-  - [ ] fix overlapping ui
-  - [ ] add plausible
+  - [ ] Harden setuid setgid
+  - [ ] Review static pages
 
   - [ ] Massive cleanup
   - [ ] Make editor to take full-height on /@namespace page
