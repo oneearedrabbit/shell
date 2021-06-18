@@ -29,9 +29,11 @@ io.on('connection', (socket) => {
 
   console.log(`user connected to ${username} channel`)
 
+  // TODO: move to sandbox API
   socket.on('save', (msg) => {
     if (msg.filename !== '') {
       fs.writeFileSync(saferesolve(vmPath, msg.filename), msg.body)
+      fs.chownSync(fullname, 65534, 65534)
     }
   })
 

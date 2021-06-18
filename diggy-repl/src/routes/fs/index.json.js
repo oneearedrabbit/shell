@@ -13,10 +13,16 @@ export async function get(params) {
   const templatize = params.query.get('templatize', false)
 
   // Templatize userland, override everything
+  // TODO: move it to sandbox API
   if (templatize) {
     const tpl = saferesolve(path.join(vmPath, '..'), './userland_tpl/welcome')
     const dst = saferesolve(fullPath, username)
     await fs.copy(tpl, dst)
+    // NOTE: this call will change ownership only for `dst' folder,
+    // all template files will be created as a docker user. If someone
+    // tries to modify those files inside an nsjail call, it will
+    // fail.
+    await fs.chown(dst, 65534, 65534)
   }
 
   let files = await readdir(username)
@@ -28,6 +34,8 @@ export async function get(params) {
   }
 }
 
+// TODO: move to sandbox API
+// New file
 export async function post(request) {
   const body = request.body
   const filename = body.filename
@@ -45,10 +53,13 @@ export async function post(request) {
   const fullname = saferesolve(path.join(vmPath, username), filename)
 
   await fs.writeFile(fullname, '')
+  await fs.chown(fullname, 65534, 65534)
 
   return { body: { message: `File ${filename} created` } }
 }
 
+// TODO: move to sandbox API
+// Delete file
 export async function del(request) {
   const body = request.body
   const filename = body.filename

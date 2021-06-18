@@ -40,13 +40,15 @@ yarn lint
 
 ```bash
 ./init-letsencrypt.sh
+./setup
 
 # for production, make change to ./init-letsencrypt.sh such
 # as email address, domains, delete exit statement
 # review domains in ./config/diggy.conf
 
 cp .env.dev .env
-# adjust .env configuration
+cp .env.smtp.dev .env.smtp
+# adjust .env and .env.smtp configuration
 
 docker-compose build
 docker-compose up
