@@ -12,14 +12,14 @@ TODO:
   - [ ] Split up web and socket containers
   - [ ] More careful mobile support and responsiviness
 
-ROADMAP:
+Roadmap:
   - [ ] Collaborative editor
   - [ ] Install Language Server Protocol
   - [ ] Support more practical and recreational languages
     - [ ] Compiled languages: C, C++, Clojure, C#, Erlang, Go, Java,
           Rust, Scala
 	- [ ] Interpreted(-based) languages: Bash, Basic, Common Lisp, Haskell,
-          Javascript, Typescript, Lua, Markdown, OCalm, Perl, PHP
+          Javascript, Typescript, Lua, Markdown, OCaml, Perl, PHP
   - [ ] Protected/read-only namespaces; perhaps, user accounts
   - [ ] Some niceties:
 	- [ ] Search box in the file listing window
