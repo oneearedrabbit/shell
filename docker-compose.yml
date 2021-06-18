@@ -22,6 +22,7 @@ services:
       - ./config/diggy.conf:/etc/nginx/conf.d/diggy.conf
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
+      - /var/run/nginx-cache/jscache:/var/run/nginx-cache/jscache
     ports:
       - 80:80
       - 443:443
