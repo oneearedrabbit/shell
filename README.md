@@ -4,6 +4,8 @@ Diggy is a playground that runs practical and recreationcal
 programming languages in a sandbox. It is a zero setup environment,
 click a link, and you are ready to go.
 
+![Diggy screenshot](https://raw.githubusercontent.com/diggyhq/shell/master/public/image.png)
+
 ## Install
 
 This repo is a silly monorepo using Node.JS and Python. You will need
