@@ -16,7 +16,7 @@ defect</a>. I will see what I can do.</p>
 <h3>X is not supported</h3>
 
 <p>Diggy is a one-man project. If it is not something that I have in
-my roadmap, it is unlikely I will have resources to do this. However,
+my <a href="https://github.com/diggyhq/shell/blob/master/ROADMAP.md">roadmap</a>, it is unlikely I will have resources to do this. However,
 Diggy is <a href="https://github.com/diggyhq/shell">an open-source
 project</a>, and you can contribute!</p>
 

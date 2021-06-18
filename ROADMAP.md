@@ -1,8 +1,6 @@
 # Roadmap
 
 TODO:
-  - [ ] Review static pages
-
   - [ ] Massive cleanup:
 	- [ ] Fix sandbox unit tests
 	- [ ] Review Svelte stores
