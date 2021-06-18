@@ -1,0 +1,9 @@
+[run]
+branch = True
+include = sandbox/*
+omit = sandbox/api/app.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if DEBUG
