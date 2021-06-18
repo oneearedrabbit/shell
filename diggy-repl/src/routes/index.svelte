@@ -68,8 +68,7 @@
         results are sent back to the browser. Since everything runs in
         a protected sandbox you cannot access network interfaces or
         (hopefully!) break
-        anything. See <a href="/pages/limitations">limitations</a >
-        for more detail.
+        anything.
       </p>
 
       <p>Ultimatelly, have fun!</p>
