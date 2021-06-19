@@ -127,6 +127,10 @@ RUN apt-get -y update \
 # RUN yes | conda install numpy \
 #     matplotlib
 
+# TODO: extract this to a post-install script, all additional packages
+# must be living outside of the Dockerfile. e.g. docker exec -it
+# <container> -v $(pwd)/post-install.sh:/post-install.sh
+# /post-install.sh
 RUN PYTHONUSERBASE=/opt/python/diggy pip install matplotlib \
   numpy
 
