@@ -22,11 +22,11 @@ app.add_middleware(
 
 nsjail = NsJail()
 
-@app.post('/eval')
+@app.post('/run')
 async def eval(request: Request):
     params = await request.json()
 
-    filename = params['input']
+    filename = params['filename']
     username = params['username']
     args = ()
 

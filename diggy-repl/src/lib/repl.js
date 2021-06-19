@@ -4,7 +4,7 @@ import { termStore, filenameStore } from '$lib/stores.js'
 export async function runCode(host, username) {
   termStore.println(`$ Running ${get(filenameStore)}...`)
 
-  const response = await fetch(`${host}/eval`, {
+  const response = await fetch(`${host}/run`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -13,7 +13,7 @@ export async function runCode(host, username) {
     // TODO: some crazy filename manipulation, perhaps align it with
     // chroot
     body: JSON.stringify({
-      input: get(filenameStore).split('/').slice(2).join('/'),
+      filename: get(filenameStore).split('/').slice(2).join('/'),
       username: username,
     }),
   })
