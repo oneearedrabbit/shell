@@ -1,36 +1,7 @@
 <script>
-  import { onMount } from 'svelte'
   import { newProject } from '$lib/utils.js'
 
   let active = false
-
-  onMount(async () => {
-    // Get all "navbar-burger" elements
-    const navbarBurgers = Array.prototype.slice.call(
-      document.querySelectorAll('.navbar-burger'),
-      0
-    )
-
-    // Check if there are any navbar burgers
-    if (navbarBurgers.length > 0) {
-      // Add a click event on each of them
-      navbarBurgers.forEach((el) => {
-        el.addEventListener('click', () => {
-          active = !active
-
-          // NOTE: something doesn't work on / page
-          // Get the target from the "data-target" attribute
-          // const target = el.dataset.target
-          // const dataTarget = document.getElementById(target);
-
-          // Toggle the "is-active" class on both the
-          // "navbar-burger" and the "navbar-menu"
-          // el.classList.toggle('is-active')
-          // dataTarget.classList.toggle('is-active');
-        })
-      })
-    }
-  })
 </script>
 
 <div class="block mb-3">
@@ -46,6 +17,7 @@
         <a
           role="button"
           class={active ? 'is-active navbar-burger' : 'navbar-burger'}
+	  on:click={() => { active = !active }}
           aria-label="menu"
           aria-expanded="false"
           data-target="navbar"
