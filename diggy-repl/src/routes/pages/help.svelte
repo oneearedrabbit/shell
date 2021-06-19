@@ -1,13 +1,12 @@
 <h2>Help</h2>
 
-<h3>What's the deal about "Diggy"?</h3>
+<h3>How do I select a language?</h3>
 
 <p>
-  I used to listen to <a href="https://www.youtube.com/watch?v=Exyz4BtRhoc"
-    >this song</a
+  Diggy will automatically select a language based on the extension, so <code
+    >.py</code
   >
-  a lot when I wanted get into and stay in the flow. Now, it is imprinted in my brain.
-  Diggy diggy hole, diggy diggy hole...
+  is Python, <code>.rb</code> is Ruby, etc.
 </p>
 
 <h3>X doesn't work!</h3>
@@ -37,4 +36,14 @@
       8’s you want."</a
     ></quote
   >
+</p>
+
+<h3>Origin of the name?</h3>
+
+<p>
+  I used to listen to <a href="https://www.youtube.com/watch?v=Exyz4BtRhoc"
+    >this song</a
+  >
+  a lot when I wanted get into and stay in the flow. Now, it is imprinted in my brain.
+  Diggy diggy hole, diggy diggy hole...
 </p>

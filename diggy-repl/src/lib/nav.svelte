@@ -17,7 +17,9 @@
         <a
           role="button"
           class={active ? 'is-active navbar-burger' : 'navbar-burger'}
-	  on:click={() => { active = !active }}
+          on:click={() => {
+            active = !active
+          }}
           aria-label="menu"
           aria-expanded="false"
           data-target="navbar"

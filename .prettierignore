@@ -3,6 +3,7 @@
 **/static/**
 **/build/**
 **/node_modules/**
+userland/
 docker-compose.yml
 tmp
 Pipfile.lock
