@@ -21,7 +21,7 @@
             </span>
             <span>Github</span>
           </a>
-	</div>
+        </div>
         <div>
           <a href="https://twitter.com/diggyhq">
             <span class="icon">
@@ -29,9 +29,11 @@
             </span>
             <span>Twitter</span>
           </a>
-	</div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="container mt-3">Diggy by <a href="https://kruzenshtern.org">Kruzenshtern, LLC</a></div>
+  <div class="container mt-3">
+    Diggy by <a href="https://kruzenshtern.org">Kruzenshtern, LLC</a>
+  </div>
 </footer>

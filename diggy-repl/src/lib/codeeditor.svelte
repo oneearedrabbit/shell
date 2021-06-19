@@ -109,15 +109,14 @@
       // const text = editor.viewState.state.doc.toJSON() || []
       const text = editor.viewState.state.sliceDoc()
 
-      clearTimeout(interval);
+      clearTimeout(interval)
       interval = setTimeout(() => {
-	if (!$socketStore) {
+        if (!$socketStore) {
           return
-	}
+        }
 
-	// TODO: extract from ws to a REST call
-	$socketStore.emit('save', { filename: $filenameStore, body: text })
-	console.log('saved!')
+        // TODO: extract from ws to a REST call
+        $socketStore.emit('save', { filename: $filenameStore, body: text })
       }, 750)
 
       dispatch('change', { text })

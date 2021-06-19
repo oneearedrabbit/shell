@@ -4,22 +4,19 @@ import { termStore, filenameStore } from '$lib/stores.js'
 export async function runCode(host, username) {
   termStore.println(`$ Running ${get(filenameStore)}...`)
 
-  const response = await fetch(
-    `${host}/eval`,
-    {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      // TODO: some crazy filename manipulation, perhaps align it with
-      // chroot
-      body: JSON.stringify({
-        input: get(filenameStore).split('/').slice(2).join('/'),
-        username: username,
-      }),
-    }
-  )
+  const response = await fetch(`${host}/eval`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    // TODO: some crazy filename manipulation, perhaps align it with
+    // chroot
+    body: JSON.stringify({
+      input: get(filenameStore).split('/').slice(2).join('/'),
+      username: username,
+    }),
+  })
 
   const body = await response.json()
   termStore.println(body.stdout)

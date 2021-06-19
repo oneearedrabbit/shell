@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
   socket.on('save', (msg) => {
     if (msg.filename !== '') {
       fs.writeFileSync(saferesolve(vmPath, msg.filename), msg.body)
-      fs.chownSync(fullname, 65534, 65534)
+      fs.chownSync(msg.filename, 65534, 65534)
     }
   })
 
