@@ -52,7 +52,8 @@ to be set.
 Name | Description
 ---- | -----------
 `DEBUG` | Enable debug logging if set to a non-empty value.
-`NSJAIL_CFG` | Path to the NsJail configuration file.
+`NSJAIL_SANDBOX_CFG` | Path to the NsJail sandbox configuration file.
+`NSJAIL_SYSTEM_CFG` | Path to the NsJail system configuration file.
 `NSJAIL_PATH` | Path to the NsJail binary.
 
 Note: relative paths are relative to the root of the repository.

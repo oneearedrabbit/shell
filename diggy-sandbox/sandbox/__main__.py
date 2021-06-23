@@ -21,7 +21,16 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     """Evaluate file through NsJail."""
     args = parse_args()
-    result = NsJail().run(args.filename, args.username, *args.nsjail_args)
+
+    # TODO: fix me
+    lang = langs.get(os.path.splitext(filename)[1])
+
+    # This language is not supported
+    if lang is None:
+        print(f"I don't know how to run `{filename}' file. Please check langs.py configuration.")
+        exit(0)
+
+    result = NsJail().run(username=username, filename=filename)
     print(result.stdout)
 
 

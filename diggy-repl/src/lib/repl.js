@@ -1,10 +1,11 @@
+import { SANDBOX_HOST } from '$lib/env.js'
 import { get } from 'svelte/store'
 import { termStore, filenameStore } from '$lib/stores.js'
 
-export async function runCode(host, username) {
+export async function runCode(username) {
   termStore.println(`$ Running ${get(filenameStore)}...`)
 
-  const response = await fetch(`${host}/run`, {
+  const response = await fetch(`${SANDBOX_HOST}/run`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -30,7 +31,7 @@ export async function newFile(username) {
     return
   }
 
-  const response = await fetch('/fs.json', {
+  const response = await fetch(`${SANDBOX_HOST}/fs`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

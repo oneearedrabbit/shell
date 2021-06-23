@@ -150,16 +150,13 @@ ENV RVM_RUBY_DEFAULT=${RVM_RUBY_VERSION}
 RUN mkdir ~/.gnupg \
  && chmod 700 ~/.gnupg \
  && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
- && gpg2 --quiet --no-tty --keyserver hkp://pool.sks-keyservers.net \
-         --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 \
+ && gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 \
                      7D2BAF1CF37B13E2069D6956105BD0E739499BDB \
- && ( echo 409B6B1796C275462A1703113804BB82D39DC0E3:6: | gpg2 --import-ownertrust ) \
- && ( echo 7D2BAF1CF37B13E2069D6956105BD0E739499BDB:6: | gpg2 --import-ownertrust ) \
  && curl -sSL https://raw.githubusercontent.com/rvm/rvm/${RVM_VERSION}/binscripts/rvm-installer -o rvm-installer \
  && curl -sSL https://raw.githubusercontent.com/rvm/rvm/${RVM_VERSION}/binscripts/rvm-installer.asc -o rvm-installer.asc \
  && gpg2 --verify rvm-installer.asc rvm-installer \
  && bash rvm-installer \
- && rm rvm-installer \
+ && rm rvm-installer rvm-installer.asc \
  && echo "rvm_autoupdate_flag=2" >> /etc/rvmrc \
  && echo "rvm_silence_path_mismatch_check_flag=1" >> /etc/rvmrc \
  && echo "install: --no-document" > /etc/gemrc

@@ -15,6 +15,7 @@ from google.protobuf import text_format
 from sandbox import DEBUG
 from sandbox.config import NsJailConfig
 from sandbox.langs import langs
+from sandbox.fs import safe_resolve
 
 log = logging.getLogger(__name__)
 
@@ -25,7 +26,10 @@ LOG_PATTERN = re.compile(
 LOG_BLACKLIST = ("Process will be ",)
 
 NSJAIL_PATH = os.getenv("NSJAIL_PATH", "/usr/sbin/nsjail")
-NSJAIL_CFG = os.getenv("NSJAIL_CFG", "./config/sandbox.cfg")
+NSJAIL_SANDBOX_CFG = os.getenv("NSJAIL_SANDBOX_CFG", "./config/sandbox.cfg")
+NSJAIL_SYSTEM_CFG = os.getenv("NSJAIL_SYSTEM_CFG", "./config/system.cfg")
+
+USERLAND_PATH = '/userland'
 
 # Limit of stdout bytes we consume before terminating nsjail
 OUTPUT_MAX = 1_000_000  # 1 MB
@@ -39,29 +43,29 @@ class NsJail:
     See config/sandbox.cfg for the default NsJail configuration.
     """
 
-    def __init__(self, nsjail_binary: str = NSJAIL_PATH):
+    def __init__(self, nsjail_binary: str = NSJAIL_PATH, nsjail_config: str = NSJAIL_SANDBOX_CFG):
         self.nsjail_binary = nsjail_binary
-        self.config = self._read_config()
+        self.nsjail_config = nsjail_config
+        self.config = self._read_config(self.nsjail_config)
 
-    @staticmethod
-    def _read_config() -> NsJailConfig:
-        """Read the NsJail config at `NSJAIL_CFG` and return a protobuf Message object."""
+    def _read_config(self, nsjail_config: str) -> NsJailConfig:
+        """Read the NsJail config at `nsjail_config` and return a protobuf Message object."""
         config = NsJailConfig()
 
         try:
-            with open(NSJAIL_CFG, encoding="utf-8") as f:
+            with open(nsjail_config, encoding="utf-8") as f:
                 config_text = f.read()
         except FileNotFoundError:
-            log.fatal(f"The NsJail config at {NSJAIL_CFG!r} could not be found.")
+            log.fatal(f"The NsJail config at {nsjail_config!r} could not be found.")
             sys.exit(1)
         except OSError as e:
-            log.fatal(f"The NsJail config at {NSJAIL_CFG!r} could not be read.", exc_info=e)
+            log.fatal(f"The NsJail config at {nsjail_config!r} could not be read.", exc_info=e)
             sys.exit(1)
 
         try:
             text_format.Parse(config_text, config)
         except text_format.ParseError as e:
-            log.fatal(f"The NsJail config at {NSJAIL_CFG!r} could not be parsed.", exc_info=e)
+            log.fatal(f"The NsJail config at {nsjail_config!r} could not be parsed.", exc_info=e)
             sys.exit(1)
 
         return config
@@ -172,50 +176,59 @@ class NsJail:
 
         return "".join(output)
 
-    def run(
-        self,
-        filename: str,
-        username: str,
-        *,
-        nsjail_args: Iterable[str] = (),
-        args: Iterable[str] = ()
-    ) -> CompletedProcess:
-        """Execute code in an isolated environment and return the completed
-        process.
+    def system(self, args: Iterable[str] = ()) -> CompletedProcess:
+        compact_args = list(filter(None, args))
+        return self.jail(args=compact_args)
 
-        The `nsjail_args` passed will be used to override the values
-        in the NsJail config.  These arguments are only options for
-        NsJail; they do not affect programming laguage's arguments.
-
-        `args` are arguments to pass to the programming laguage
-        subprocess before the code, which is the last argument. By
-        default, it's "-c", which executes the code given.
-
-        """
-        cgroup = self._create_dynamic_cgroups()
-        fullpath = f'/userland/{username}'
-
+    def run(self, filename: str, username: str) -> CompletedProcess:
+        # TODO: this will blow up if there is no extension
         lang = langs.get(os.path.splitext(filename)[1])
 
         # This language is not supported
         if lang is None:
-            return CompletedProcess('', 0, 'Language is not supported', None)
+            return {
+                "stdout": 'Language is not supported',
+                "returncode": 0
+            }
+
+        args = (lang['path'], lang['args'], str(safe_resolve(filename, USERLAND_PATH)),)
+        compact_args = list(filter(None, args))
+        nsjail_args = ("--bindmount", f'{USERLAND_PATH}/{username}:{USERLAND_PATH}',)
+
+        return self.jail(args=compact_args, nsjail_args=nsjail_args)
+        
+    def jail(
+        self,
+        nsjail_args: Iterable[str] = (),
+        args: Iterable[str] = ()
+    ) -> CompletedProcess:
+        """
+        Execute cmd from args in an isolated environment and return
+        the completed process.
+
+        The `nsjail_args` passed will be used to override the values
+        in the NsJail config. These arguments are only options for
+        NsJail; they do not affect programming laguage's arguments.
+
+        `args` are arguments to pass to the programming laguage
+        subprocess before the code, which is the last argument.
+        """
+        cgroup = self._create_dynamic_cgroups()
 
         with NamedTemporaryFile() as nsj_log:
             args = (
                 self.nsjail_binary,
-                "--config", NSJAIL_CFG,
+                "--config", self.nsjail_config,
                 "--log", nsj_log.name,
                 # Set our dynamically created parent cgroups
                 "--cgroup_mem_parent", cgroup,
                 "--cgroup_pids_parent", cgroup,
-                "--bindmount", f'{fullpath}:/userland',
                 *nsjail_args,
                 "--",
-                lang['path'], *lang['arg'], *args, f'/userland/{filename}'
+                *args
             )
 
-            msg = f'Executing filename {fullpath}/{filename}...'
+            msg = f'Executing {args}...'
             log.info(msg)
 
             try:

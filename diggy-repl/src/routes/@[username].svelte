@@ -2,6 +2,7 @@
   /**
    * @type {import('@sveltejs/kit').Load}
    */
+  // TODO: this code duplicates index.svelte, extract it repl.svelte component
   export async function load({ page, fetch }) {
     const username = page.params.username
 
@@ -14,10 +15,12 @@
     )
 
     if (res.ok) {
+      const files = await res.json()
+
       return {
         props: {
+          files: files,
           username: username,
-          files: await res.json(),
         },
       }
     }

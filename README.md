@@ -62,7 +62,9 @@ Disclaimer: Diggy's code base is not in the best shape at the moment,
 it was put as a weekend project, and it does require a massive clean
 up.
 
-See ROADMAP.md for more detail.
+See
+[ROADMAP.md](https://github.com/diggyhq/shell/blob/master/ROADMAP.md)
+for more detail.
 
 ## Configure DigitalOcean instance
 
@@ -77,6 +79,7 @@ See ROADMAP.md for more detail.
 - (local) add domains to /etc/hosts
 - (local) FireFox is going to complain about dummy certificates, visit
   each test domain to acknowledge security risks. Otherwise, CORS will fail
+- replace ./config/diggy.dev.conf to ./config/diggy.conf in docker-compose.yml
 - adjust ./config/diggy.conf, and ./init-letsencrypt.sh per your setup
   (specifically replace diggy.test to whatever makes more sense)
 - run ./init-letsencrypt.sh

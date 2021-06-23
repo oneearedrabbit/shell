@@ -1,7 +1,7 @@
 <script>
   export let username, files, templatize
 
-  import { SANDBOX_HOST, WS_HOST } from '$lib/env.js'
+  import { WS_HOST } from '$lib/env.js'
   import { runCode, newFile } from './repl.js'
   import { onMount } from 'svelte'
   import CodeEditor from '$lib/codeeditor.svelte'
@@ -80,7 +80,7 @@
     <div class="has-text-weight-bold pb-2">
       <a
         class="button is-link is-small"
-        on:click={runCode(SANDBOX_HOST, username)}>Run &#9658;</a
+        on:click={runCode(username)}>Run &#9658;</a
       >
     </div>
 

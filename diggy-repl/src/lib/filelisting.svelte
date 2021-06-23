@@ -1,4 +1,5 @@
 <script>
+  import { SANDBOX_HOST } from '$lib/env.js'
   import { editorStore, filenameStore, termStore } from '$lib/stores.js'
   import { onMount } from 'svelte'
 
@@ -39,12 +40,13 @@
   })
 
   async function readFile(filename) {
-    const url = `/fs/${filename}.json`
+    const url = `${SANDBOX_HOST}/fs/${filename}`
     const res = await fetch(url)
 
     if (res.ok) {
-      const text = await res.text()
-      editorStore.setContent(text)
+      const text = await res.json()
+      const body = text.body
+      editorStore.setContent(body)
       filenameStore.set(filename)
       return
     }
@@ -65,9 +67,8 @@
   }
 
   async function openFile(pathname) {
-    const url = `/fs${pathname}/raw`
-    history.pushState({}, '', url)
-    window.location.assign(url)
+    const url = `${SANDBOX_HOST}/fs${pathname}/raw`
+    window.location.href = url
   }
 
   async function delFile(pathname) {
@@ -77,7 +78,7 @@
       return
     }
 
-    const response = await fetch('/fs.json', {
+    const response = await fetch(`${SANDBOX_HOST}/fs`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
