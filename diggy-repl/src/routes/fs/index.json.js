@@ -1,5 +1,4 @@
 import fetch from 'node-fetch'
-import https from 'https'
 
 /*
  * @type {import('@sveltejs/kit').RequestHandler}
