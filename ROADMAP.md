@@ -10,6 +10,7 @@ TODO:
 - [ ] Make editor to fill the entire screen on /@namespace page
 - [ ] Split up web and socket containers
 - [ ] More careful mobile support and responsiviness
+- [ ] Better experience for local development without docker-compose
 
 Roadmap:
 
