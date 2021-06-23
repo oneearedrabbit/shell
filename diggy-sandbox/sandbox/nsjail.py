@@ -196,8 +196,8 @@ class NsJail:
         return self.jail(args=compact_args)
 
     def run(self, filename: str, username: str) -> CompletedProcess:
-        # TODO: this will blow up if there is no extension
-        lang = langs.get(os.path.splitext(filename)[1])
+        _, extension = os.path.splitext(filename)[1]
+        lang = langs.get(extension)
 
         # This language is not supported
         if lang is None:
