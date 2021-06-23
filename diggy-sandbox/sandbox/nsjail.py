@@ -195,7 +195,7 @@ class NsJail:
         return self.jail(args=compact_args)
 
     def run(self, filename: str, username: str) -> CompletedProcess:
-        _, extension = os.path.splitext(filename)[1]
+        _, extension = os.path.splitext(filename)
         lang = langs.get(extension)
 
         # This language is not supported
