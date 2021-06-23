@@ -54,7 +54,6 @@ services:
       - .env
     volumes:
       - ./userland:/userland
-      - ./userland_tpl:/userland_tpl
     networks:
       - net
       - mail

@@ -15,7 +15,8 @@ from google.protobuf import text_format
 from sandbox import DEBUG
 from sandbox.config import NsJailConfig
 from sandbox.langs import langs
-from sandbox.fs import safe_resolve
+from sandbox.fs import userland_resolve
+from sandbox.env import USERLAND_PATH
 
 log = logging.getLogger(__name__)
 
@@ -28,8 +29,6 @@ LOG_BLACKLIST = ("Process will be ",)
 NSJAIL_PATH = os.getenv("NSJAIL_PATH", "/usr/sbin/nsjail")
 NSJAIL_SANDBOX_CFG = os.getenv("NSJAIL_SANDBOX_CFG", "./config/sandbox.cfg")
 NSJAIL_SYSTEM_CFG = os.getenv("NSJAIL_SYSTEM_CFG", "./config/system.cfg")
-
-USERLAND_PATH = '/userland'
 
 # Limit of stdout bytes we consume before terminating nsjail
 OUTPUT_MAX = 1_000_000  # 1 MB
@@ -191,7 +190,7 @@ class NsJail:
                 "returncode": 0
             }
 
-        args = (lang['path'], lang['args'], str(safe_resolve(filename, USERLAND_PATH)),)
+        args = (lang['path'], lang['args'], userland_resolve(filename),)
         compact_args = list(filter(None, args))
         nsjail_args = ("--bindmount", f'{USERLAND_PATH}/{username}:{USERLAND_PATH}',)
 

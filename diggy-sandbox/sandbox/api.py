@@ -6,7 +6,7 @@ from fastapi import Request, FastAPI
 from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sandbox.nsjail import NsJail, USERLAND_PATH, NSJAIL_SYSTEM_CFG
-from sandbox.fs import safe_resolve
+from sandbox.fs import userland_resolve
 from pathlib import Path
 
 log = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ async def getFiles(username: str = None, templatize: bool = False):
 
     if templatize:
         tpl = '/userland_tpl/welcome/*'
-        dst = str(safe_resolve(username, USERLAND_PATH))
+        dst = userland_resolve(username)
 
         cmd = ('/bin/mkdir', '-p', dst)
         system_nsjail.system(cmd)
@@ -47,7 +47,7 @@ async def getFiles(username: str = None, templatize: bool = False):
         # system_nsjail.system(cmd)
         os.system(' '.join(cmd))
 
-    fullpath = safe_resolve(username, USERLAND_PATH)
+    fullpath = userland_resolve(username)
     files = [el for el in glob.iglob(f'{fullpath}/**/*', recursive=True)] or []
     files = [el.split(USERLAND_PATH)[1] for el in files]
 
@@ -57,7 +57,7 @@ async def getFiles(username: str = None, templatize: bool = False):
 
 @app.get('/fs/{filename:path}/raw', response_class=PlainTextResponse)
 async def rawFile(filename: str):
-    fullname = safe_resolve(filename, USERLAND_PATH)
+    fullname = userland_resolve(filename)
 
     # TODO: nsjail call?
     with open(fullname) as f:
@@ -67,7 +67,7 @@ async def rawFile(filename: str):
 
 @app.get('/fs/{filename:path}')
 async def readFile(filename: str):
-    fullname = safe_resolve(filename, USERLAND_PATH)
+    fullname = userland_resolve(filename)
 
     # TODO: nsjail call?
     with open(fullname) as f:
@@ -89,7 +89,7 @@ async def addFile(request: Request):
     if filename is None:
         return { 'body': { 'message': 'Empty filename' } }
 
-    fullname = safe_resolve(os.path.join(username, filename), USERLAND_PATH)
+    fullname = userland_resolve(os.path.join(username, filename))
 
     cmd = ('/bin/touch', fullname)
     system_nsjail.system(cmd)
@@ -104,7 +104,7 @@ async def delFile(request: Request):
     if filename is None:
         return { 'body': { 'message': 'Empty filename' } }
 
-    fullname = safe_resolve(filename, USERLAND_PATH)
+    fullname = userland_resolve(filename)
 
     cmd = ('/bin/rm', '-f', fullname)
     system_nsjail.system(cmd)
