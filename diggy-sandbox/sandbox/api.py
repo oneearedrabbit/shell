@@ -29,25 +29,25 @@ app.add_middleware(
 
 @app.get("/fs")
 async def getFiles(username: str = None, templatize: bool = False):
-    # TODO: this is a shortcut to pre-create projects, eventually
-    # it'll become newProject endpoint
     if username is None:
         return {"body": {"message": "Unknown username"}}
 
+    dst = userland_resolve(username)
+
+    # TODO: this is a shortcut to pre-create projects, eventually
+    # it'll become newProject endpoint
+    cmd = ("/bin/mkdir", "-p", dst)
+    system_nsjail.system(cmd)
+
     if templatize:
         tpl = "/userland_tpl/welcome/*"
-        dst = userland_resolve(username)
-
-        cmd = ("/bin/mkdir", "-p", dst)
-        system_nsjail.system(cmd)
 
         cmd = ("/bin/cp", "-pr", tpl, dst)
         # TODO: troubleshoot why nsjail doesn't copy files
         # system_nsjail.system(cmd)
         os.system(" ".join(cmd))
 
-    fullpath = userland_resolve(username)
-    files = [el for el in glob.iglob(f"{fullpath}/**/*", recursive=True)] or []
+    files = [el for el in glob.iglob(f"{dst}/**/*", recursive=True)] or []
     files = [el.split(USERLAND_PATH)[1] for el in files]
 
     return {
