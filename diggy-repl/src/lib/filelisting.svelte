@@ -39,21 +39,6 @@
     }
   })
 
-  async function readFile(filename) {
-    const url = `${SANDBOX_HOST}/fs/${filename}`
-    const res = await fetch(url)
-
-    if (res.ok) {
-      const text = await res.json()
-      const body = text.body
-      editorStore.setContent(body)
-      filenameStore.set(filename)
-      return
-    }
-
-    // TODO: handle error
-  }
-
   function beautifyPath(pathname) {
     const chunks = pathname.split('/')
     let folder = chunks.slice(2, -1).filter(Boolean)
@@ -64,6 +49,20 @@
     folder = folder.join('')
     const filename = chunks.slice(-1).join()
     return `<span class="folder">${folder}</span><span class="filename">${filename}</span>`
+  }
+
+  async function readFile(filename) {
+    const url = `${SANDBOX_HOST}/fs/${filename}/raw`
+    const res = await fetch(url)
+
+    if (res.ok) {
+      const body = await res.text()
+      editorStore.setContent(body)
+      filenameStore.set(filename)
+      return
+    }
+
+    // TODO: handle error
   }
 
   async function openFile(pathname) {

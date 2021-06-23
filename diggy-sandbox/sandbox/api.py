@@ -66,19 +66,6 @@ async def rawFile(filename: str):
     return content
 
 
-@app.get("/fs/{filename:path}")
-async def readFile(filename: str):
-    fullname = userland_resolve(filename)
-
-    # TODO: nsjail call?
-    with open(fullname) as f:
-        content = f.read()
-
-    return {
-        "body": content,
-    }
-
-
 @app.post("/fs")
 async def addFile(request: Request):
     params = await request.json()
