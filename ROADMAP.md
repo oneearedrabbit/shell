@@ -6,12 +6,12 @@ TODO:
   - [ ] Fix sandbox unit tests
   - [ ] Review Svelte stores
   - [ ] Handle exceptions better, review edge cases
-  - [ ] Save files via Sandbox and an API call and delete chown
-        calls
   - [ ] Error pages: 404, 500
+  - [ ] Disable Plausible in dev environment
 - [ ] Make editor to fill the entire screen on /@namespace page
 - [ ] Split up web and socket containers
 - [ ] More careful mobile support and responsiviness
+- [ ] Better experience for local development without docker-compose
 
 Roadmap:
 
@@ -22,6 +22,7 @@ Roadmap:
         Rust, Scala
   - [ ] Interpreted(-based) languages: Bash, Basic, Common Lisp, Haskell,
         Javascript, Typescript, Lua, Markdown, OCaml, Perl, PHP
+- [ ] Mount only required for a selected language nsjail volumes
 - [ ] Protected/read-only namespaces; perhaps, user accounts
 - [ ] Some niceties:
   - [ ] Search box in the file listing window

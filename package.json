@@ -2,7 +2,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "prettier --check . && eslint --ignore-path .gitignore . && flake8",
-    "format": "prettier --write ."
+    "format": "prettier --write . && black ."
   },
   "devDependencies": {
     "svelte": "^3.29.0",

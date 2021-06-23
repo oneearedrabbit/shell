@@ -19,7 +19,7 @@ services:
     image: nginx:latest
     restart: unless-stopped
     volumes:
-      - ./config/diggy.conf:/etc/nginx/conf.d/diggy.conf
+      - ./config/diggy.dev.conf:/etc/nginx/conf.d/diggy.conf
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
       - /var/run/nginx-cache/jscache:/var/run/nginx-cache/jscache
@@ -54,7 +54,6 @@ services:
       - .env
     volumes:
       - ./userland:/userland
-      - ./userland_tpl:/userland_tpl
     networks:
       - net
       - mail
@@ -74,10 +73,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.sandbox
-      args:
-        DEV: 0
     volumes:
       - ./userland:/userland
+      - ./userland_tpl:/userland_tpl
     networks:
       - net
 

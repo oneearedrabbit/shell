@@ -3,6 +3,7 @@
 
   import { runCode } from './repl.js'
 
+  // Initialize CodeMirror asynchronously, load an initial page faster
   export async function loadCodeMirror() {
     // Core
     const CodeMirrorView = await import('@codemirror/view')
@@ -134,7 +135,7 @@
           {
             key: `${mod}-Enter`,
             run: async () => {
-              runCode(SANDBOX_HOST, username)
+              runCode(username)
             },
           },
         ]),

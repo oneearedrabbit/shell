@@ -1,12 +1,8 @@
 langs = {
-    '.py': {
-        'name': 'Python',
-        'path': '/usr/local/bin/python',
-        'arg': ['-BSqu']
+    ".py": {"name": "Python", "path": "/usr/local/bin/python", "args": "-BSqu"},
+    ".rb": {
+        "name": "Ruby",
+        "path": "/usr/local/rvm/rubies/default/bin/ruby",
+        "args": "",
     },
-    '.rb': {
-        'name': 'Ruby',
-        'path': '/usr/local/rvm/rubies/default/bin/ruby',
-        'arg': []
-    }
 }

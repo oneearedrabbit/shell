@@ -3,7 +3,6 @@ import os
 import re
 import subprocess
 import sys
-import textwrap
 import uuid
 from pathlib import Path
 from subprocess import CompletedProcess
@@ -15,6 +14,8 @@ from google.protobuf import text_format
 from sandbox import DEBUG
 from sandbox.config import NsJailConfig
 from sandbox.langs import langs
+from sandbox.fs import userland_resolve
+from sandbox.env import USERLAND_PATH
 
 log = logging.getLogger(__name__)
 
@@ -25,7 +26,8 @@ LOG_PATTERN = re.compile(
 LOG_BLACKLIST = ("Process will be ",)
 
 NSJAIL_PATH = os.getenv("NSJAIL_PATH", "/usr/sbin/nsjail")
-NSJAIL_CFG = os.getenv("NSJAIL_CFG", "./config/sandbox.cfg")
+NSJAIL_SANDBOX_CFG = os.getenv("NSJAIL_SANDBOX_CFG", "./config/sandbox.cfg")
+NSJAIL_SYSTEM_CFG = os.getenv("NSJAIL_SYSTEM_CFG", "./config/system.cfg")
 
 # Limit of stdout bytes we consume before terminating nsjail
 OUTPUT_MAX = 1_000_000  # 1 MB
@@ -39,29 +41,41 @@ class NsJail:
     See config/sandbox.cfg for the default NsJail configuration.
     """
 
-    def __init__(self, nsjail_binary: str = NSJAIL_PATH):
+    def __init__(
+        self,
+        nsjail_binary: str = NSJAIL_PATH,
+        nsjail_config: str = NSJAIL_SANDBOX_CFG,
+    ):
         self.nsjail_binary = nsjail_binary
-        self.config = self._read_config()
+        self.nsjail_config = nsjail_config
+        self.config = self._read_config(self.nsjail_config)
 
-    @staticmethod
-    def _read_config() -> NsJailConfig:
-        """Read the NsJail config at `NSJAIL_CFG` and return a protobuf Message object."""
+    def _read_config(self, nsjail_config: str) -> NsJailConfig:
+        """Read the NsJail config at `nsjail_config` and return a protobuf Message object."""
         config = NsJailConfig()
 
         try:
-            with open(NSJAIL_CFG, encoding="utf-8") as f:
+            with open(nsjail_config, encoding="utf-8") as f:
                 config_text = f.read()
         except FileNotFoundError:
-            log.fatal(f"The NsJail config at {NSJAIL_CFG!r} could not be found.")
+            log.fatal(
+                f"The NsJail config at {nsjail_config!r} could not be found."
+            )
             sys.exit(1)
         except OSError as e:
-            log.fatal(f"The NsJail config at {NSJAIL_CFG!r} could not be read.", exc_info=e)
+            log.fatal(
+                f"The NsJail config at {nsjail_config!r} could not be read.",
+                exc_info=e,
+            )
             sys.exit(1)
 
         try:
             text_format.Parse(config_text, config)
         except text_format.ParseError as e:
-            log.fatal(f"The NsJail config at {NSJAIL_CFG!r} could not be parsed.", exc_info=e)
+            log.fatal(
+                f"The NsJail config at {nsjail_config!r} could not be parsed.",
+                exc_info=e,
+            )
             sys.exit(1)
 
         return config
@@ -99,7 +113,9 @@ class NsJail:
         try:
             # Swap limit is specified as the sum of the memory and swap limits.
             # Therefore, setting it equal to the memory limit effectively disables swapping.
-            (mem / "memory.memsw.limit_in_bytes").write_text(mem_max, encoding="utf-8")
+            (mem / "memory.memsw.limit_in_bytes").write_text(
+                mem_max, encoding="utf-8"
+            )
         except PermissionError:
             log.warning(
                 "Failed to set the memory swap limit for the cgroup. "
@@ -166,56 +182,73 @@ class NsJail:
                 if output_size > OUTPUT_MAX:
                     # Terminate the NsJail subprocess with SIGTERM.
                     # This in turn reaps and kills children with SIGKILL.
-                    log.info("Output exceeded the output limit, sending SIGTERM to NsJail.")
+                    log.info(
+                        "Output exceeded the output limit, sending SIGTERM to NsJail."
+                    )
                     nsjail.terminate()
                     break
 
         return "".join(output)
 
-    def run(
-        self,
-        filename: str,
-        username: str,
-        *,
-        nsjail_args: Iterable[str] = (),
-        args: Iterable[str] = ()
-    ) -> CompletedProcess:
-        """Execute code in an isolated environment and return the completed
-        process.
+    def system(self, args: Iterable[str] = ()) -> CompletedProcess:
+        compact_args = list(filter(None, args))
+        return self.jail(args=compact_args)
 
-        The `nsjail_args` passed will be used to override the values
-        in the NsJail config.  These arguments are only options for
-        NsJail; they do not affect programming laguage's arguments.
-
-        `args` are arguments to pass to the programming laguage
-        subprocess before the code, which is the last argument. By
-        default, it's "-c", which executes the code given.
-
-        """
-        cgroup = self._create_dynamic_cgroups()
-        fullpath = f'/userland/{username}'
-
-        lang = langs.get(os.path.splitext(filename)[1])
+    def run(self, filename: str, username: str) -> CompletedProcess:
+        _, extension = os.path.splitext(filename)
+        lang = langs.get(extension)
 
         # This language is not supported
         if lang is None:
-            return CompletedProcess('', 0, 'Language is not supported', None)
+            return {"stdout": "Language is not supported", "returncode": 0}
+
+        args = (
+            lang["path"],
+            lang["args"],
+            userland_resolve(filename),
+        )
+        compact_args = list(filter(None, args))
+        nsjail_args = (
+            "--bindmount",
+            f"{USERLAND_PATH}/{username}:{USERLAND_PATH}",
+        )
+
+        return self.jail(args=compact_args, nsjail_args=nsjail_args)
+
+    def jail(
+        self, nsjail_args: Iterable[str] = (), args: Iterable[str] = ()
+    ) -> CompletedProcess:
+        """
+        Execute cmd from args in an isolated environment and return
+        the completed process.
+
+        The `nsjail_args` passed will be used to override the values
+        in the NsJail config. These arguments are only options for
+        NsJail; they do not affect programming laguage's arguments.
+
+        `args` are arguments to pass to the programming laguage
+        subprocess before the code, which is the last argument.
+        """
+        cgroup = self._create_dynamic_cgroups()
 
         with NamedTemporaryFile() as nsj_log:
             args = (
                 self.nsjail_binary,
-                "--config", NSJAIL_CFG,
-                "--log", nsj_log.name,
+                "--config",
+                self.nsjail_config,
+                "--log",
+                nsj_log.name,
                 # Set our dynamically created parent cgroups
-                "--cgroup_mem_parent", cgroup,
-                "--cgroup_pids_parent", cgroup,
-                "--bindmount", f'{fullpath}:/userland',
+                "--cgroup_mem_parent",
+                cgroup,
+                "--cgroup_pids_parent",
+                cgroup,
                 *nsjail_args,
                 "--",
-                lang['path'], *lang['arg'], *args, f'/userland/{filename}'
+                *args,
             )
 
-            msg = f'Executing filename {fullpath}/{filename}...'
+            msg = f"Executing {args}..."
             log.info(msg)
 
             try:
@@ -223,10 +256,12 @@ class NsJail:
                     args,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
-                    text=True
+                    text=True,
                 )
             except ValueError:
-                return CompletedProcess(args, None, "ValueError: embedded null byte", None)
+                return CompletedProcess(
+                    args, None, "ValueError: embedded null byte", None
+                )
 
             try:
                 output = self._consume_stdout(nsjail)
@@ -241,7 +276,11 @@ class NsJail:
             # When you send signal `N` to a subprocess to terminate it using Popen, it
             # will return `-N` as its exit code. As we normally get `N + 128` back, we
             # convert negative exit codes to the `N + 128` form.
-            returncode = -nsjail.returncode + 128 if nsjail.returncode < 0 else nsjail.returncode
+            returncode = (
+                -nsjail.returncode + 128
+                if nsjail.returncode < 0
+                else nsjail.returncode
+            )
 
             log_lines = nsj_log.read().decode("utf-8").splitlines()
             if not log_lines and returncode == 255:
@@ -256,7 +295,8 @@ class NsJail:
         try:
             Path(self.config.cgroup_mem_mount, cgroup).rmdir()
             Path(self.config.cgroup_pids_mount, cgroup).rmdir()
-        except OSError as e:
-            log.error('Could not remove temporary cgroup/pids')
+        except OSError:
+            # Perhaps nsjail failed and it didn't create them
+            log.error("Could not remove temporary cgroup/pids")
 
         return CompletedProcess(args, returncode, output, None)

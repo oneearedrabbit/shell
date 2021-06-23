@@ -1,0 +1,11 @@
+[tool.black]
+line-length = 80
+target-version = ['py37']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+ | userland
+ | userland_tpl
+ | diggy-sandbox/sandbox/config.py
+)/
+'''
