@@ -43,6 +43,7 @@ async def getFiles(username: str = None, templatize: bool = False):
         cmd = ("/bin/cp", "-pr", tpl, dst)
         system_nsjail.system(cmd)
 
+    # TODO: nsjail call?
     files = [el for el in glob.iglob(f"{dst}/**/*", recursive=True)] or []
     files = [el.split(USERLAND_PATH)[1] for el in files]
 
@@ -55,11 +56,10 @@ async def getFiles(username: str = None, templatize: bool = False):
 async def rawFile(filename: str):
     fullname = userland_resolve(filename)
 
-    # TODO: nsjail call?
-    with open(fullname) as f:
-        content = f.read()
+    cmd = ('/bin/cat', fullname)
+    result = system_nsjail.system(cmd)
 
-    return content
+    return result.stdout
 
 
 @app.post("/fs")
