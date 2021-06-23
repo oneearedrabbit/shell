@@ -19,6 +19,6 @@ export async function get(params) {
   const body = await resp.json()
 
   return {
-    body: body.files
+    body: body.files,
   }
 }

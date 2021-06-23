@@ -13,7 +13,7 @@ to install some dependencies first.
 
 ```bash
 npm install -g yarn
-pip install flake8
+pip install flake8 black
 ```
 
 ## NSJail

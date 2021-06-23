@@ -18,7 +18,12 @@ def compile_proto(path: Path) -> None:
         print("protoc binary could not be found on PATH", file=sys.stderr)
         sys.exit(1)
 
-    args = [protoc_bin, f"--proto_path={path.parent}", f"--python_out={SRC_DIR}", path]
+    args = [
+        protoc_bin,
+        f"--proto_path={path.parent}",
+        f"--python_out={SRC_DIR}",
+        path,
+    ]
     result = subprocess.run(args)
 
     if result.returncode != 0:
@@ -27,8 +32,12 @@ def compile_proto(path: Path) -> None:
 
 def get_version() -> str:
     """Get the NsJail version from the command line arguments."""
-    parser = ArgumentParser(description="Compile an NsJail config protobuf into Python.")
-    parser.add_argument("version", help="the NsJail version from which to get the protobuf file")
+    parser = ArgumentParser(
+        description="Compile an NsJail config protobuf into Python."
+    )
+    parser.add_argument(
+        "version", help="the NsJail version from which to get the protobuf file"
+    )
     args = parser.parse_args()
 
     return args.version
@@ -41,7 +50,10 @@ def main() -> None:
 
     with urlopen(url) as response:
         if response.status >= 400:
-            print(f"Failed to retrieve config.proto: status {response.status}", file=sys.stderr)
+            print(
+                f"Failed to retrieve config.proto: status {response.status}",
+                file=sys.stderr,
+            )
             sys.exit(1)
 
         with TemporaryDirectory() as dir_name:
@@ -54,7 +66,10 @@ def main() -> None:
     if generated_py := next(SRC_DIR.glob(f"{FILE_NAME}_pb*.py"), None):
         generated_py.rename(generated_py.with_stem(FILE_NAME))
     else:
-        print(f"Could not find the generated Python file in {SRC_DIR}.", file=sys.stderr)
+        print(
+            f"Could not find the generated Python file in {SRC_DIR}.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 

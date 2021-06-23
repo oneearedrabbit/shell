@@ -78,10 +78,9 @@
   </div>
   <div class="column is-two-fifths" style="border-left:1px solid #333333;">
     <div class="has-text-weight-bold pb-2">
-      <a
-        class="button is-link is-small"
-        on:click={runCode(username)}>Run &#9658;</a
-      >
+      <a class="button is-link is-small" on:click={runCode(username)}>
+	Run &#9658;
+      </a>
     </div>
 
     <ReplTerminal />

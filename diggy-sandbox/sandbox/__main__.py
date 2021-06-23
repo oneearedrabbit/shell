@@ -5,10 +5,14 @@ from sandbox.nsjail import NsJail
 
 def parse_args() -> argparse.Namespace:
     """Parse the command-line arguments and return the populated namespace."""
-    parser = argparse.ArgumentParser(prog="sandbox", usage="%(prog)s filename username [nsjail_args ...]")
+    parser = argparse.ArgumentParser(
+        prog="sandbox", usage="%(prog)s filename username [nsjail_args ...]"
+    )
     parser.add_argument("filename", help="filename to evaluate")
     parser.add_argument("username", help="username")
-    parser.add_argument("nsjail_args", nargs="?", help="override configured NsJail options")
+    parser.add_argument(
+        "nsjail_args", nargs="?", help="override configured NsJail options"
+    )
 
     # nsjail_args is just a dummy for documentation purposes.
     # Its actual value comes from all the unknown arguments.
@@ -27,7 +31,9 @@ def main() -> None:
 
     # This language is not supported
     if lang is None:
-        print(f"I don't know how to run `{filename}' file. Please check langs.py configuration.")
+        print(
+            f"I don't know how to run `{filename}' file. Please check langs.py configuration."
+        )
         exit(0)
 
     result = NsJail().run(username=username, filename=filename)
