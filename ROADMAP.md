@@ -7,6 +7,7 @@ TODO:
   - [ ] Review Svelte stores
   - [ ] Handle exceptions better, review edge cases
   - [ ] Error pages: 404, 500
+  - [ ] Disable Plausible in dev environment
 - [ ] Make editor to fill the entire screen on /@namespace page
 - [ ] Split up web and socket containers
 - [ ] More careful mobile support and responsiviness
