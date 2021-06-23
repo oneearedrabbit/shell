@@ -1,13 +1,11 @@
 import logging
 import glob
 import os
-from distutils.dir_util import copy_tree
 from fastapi import Request, FastAPI
 from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sandbox.nsjail import NsJail, USERLAND_PATH, NSJAIL_SYSTEM_CFG
 from sandbox.fs import userland_resolve
-from pathlib import Path
 
 log = logging.getLogger(__name__)
 

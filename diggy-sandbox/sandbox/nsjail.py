@@ -3,7 +3,6 @@ import os
 import re
 import subprocess
 import sys
-import textwrap
 import uuid
 from pathlib import Path
 from subprocess import CompletedProcess
@@ -296,7 +295,8 @@ class NsJail:
         try:
             Path(self.config.cgroup_mem_mount, cgroup).rmdir()
             Path(self.config.cgroup_pids_mount, cgroup).rmdir()
-        except OSError as e:
+        except OSError:
+            # Perhaps nsjail failed and it didn't create them
             log.error("Could not remove temporary cgroup/pids")
 
         return CompletedProcess(args, returncode, output, None)
