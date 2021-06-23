@@ -38,12 +38,10 @@ async def getFiles(username: str = None, templatize: bool = False):
     system_nsjail.system(cmd)
 
     if templatize:
-        tpl = "/userland_tpl/welcome/*"
+        tpl = "/userland_tpl/welcome/."
 
         cmd = ("/bin/cp", "-pr", tpl, dst)
-        # TODO: troubleshoot why nsjail doesn't copy files
-        # system_nsjail.system(cmd)
-        os.system(" ".join(cmd))
+        system_nsjail.system(cmd)
 
     files = [el for el in glob.iglob(f"{dst}/**/*", recursive=True)] or []
     files = [el.split(USERLAND_PATH)[1] for el in files]
