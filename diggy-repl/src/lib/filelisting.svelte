@@ -57,7 +57,7 @@
 
     if (res.ok) {
       const body = await res.text()
-      editorStore.setContent(body)
+      editorStore.set(body)
       filenameStore.set(filename)
       return
     }

@@ -16,7 +16,7 @@
     const fitAddon = new FitAddon()
     term.loadAddon(fitAddon)
 
-    termStore.set(term, fitAddon)
+    termStore.set(term)
     term.open(refs.terminal)
 
     fitAddon.fit()

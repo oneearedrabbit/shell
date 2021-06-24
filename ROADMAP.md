@@ -4,7 +4,6 @@ TODO:
 
 - [ ] Massive cleanup:
   - [ ] Fix sandbox unit tests
-  - [ ] Review Svelte stores
   - [ ] Handle exceptions better, review edge cases
   - [ ] Error pages: 404, 500
   - [ ] Disable Plausible in dev environment
