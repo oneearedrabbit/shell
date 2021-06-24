@@ -38,6 +38,34 @@ yarn format
 yarn lint
 ```
 
+If you want to develop Diggy locally without `docker-compose`, you
+will need to adjust `.env` file to something like this. nsjail won't
+make it easier, so for the time being I recommend running at least two
+containers: `nginx` and `sandbox`.
+
+```
+VM_PATH=/userland
+HOST=0.0.0.0
+WEB_HOST=http://diggy.test:3000
+VITE_WS_HOST=http://diggy.test:5000
+VITE_SANDBOX_HOST=http://sandbox.diggy.test
+VITE_SANDBOX_HOST_LOCAL=http://sandbox.diggy.test
+```
+
+Make sure to add hosts to `/etc/hosts`:
+```
+127.0.0.1 diggy.test
+127.0.0.1 ws.diggy.test
+127.0.0.1 sandbox.diggy.test
+```
+
+It should be enough to get frontend up and running:
+```
+cd diggy-repl
+yarn dev
+yarn server
+```
+
 ## Run
 
 ```bash
