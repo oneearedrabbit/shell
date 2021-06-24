@@ -200,7 +200,7 @@ class NsJail:
 
         # This language is not supported
         if lang is None:
-            return {"stdout": "Language is not supported", "returncode": 0}
+            return CompletedProcess('', 0, "Language is not supported", None)
 
         args = (
             lang["path"],
