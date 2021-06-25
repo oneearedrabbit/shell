@@ -44,7 +44,7 @@ async def getFiles(username: str = None, templatize: bool = False):
         system_nsjail.system(cmd)
 
     # TODO: nsjail call?
-    files = [el for el in glob.iglob(f"{dst}/**/*", recursive=True)] or []
+    files = [el for el in glob.iglob(f"{dst}/**/*", recursive=True) if not os.path.isdir(el)] or []
     files = [el.split(USERLAND_PATH)[1] for el in files]
 
     return {
