@@ -109,7 +109,7 @@
       </p>
 
       <p>
-        That being said, I suggest not to run anything critical or sensetive at
+        That being said, I suggest not to run anything critical or sensitive at
         this point on Diggy. I think I will be cleaning up anonymous projects
         from time to time. At some point, I will implement permanent accounts.
       </p>
